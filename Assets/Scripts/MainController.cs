@@ -7,6 +7,9 @@ public class MainController : SingletonBehaviour<MainController>
     [SerializeField] private LogManager _logManager;
     [SerializeField] private UIPopupWindow_MessageBox _globalMessageBox;
 
+    [Header("Log Copied Toast")]
+    [SerializeField] private UIToastMessage _logCopiedToast;
+
     public Canvas MainCanvas => _mainCanvas;
     public Canvas PopupCanvas => _popupCanvas;
     public LogManager LogManager => _logManager;
@@ -16,5 +19,10 @@ public class MainController : SingletonBehaviour<MainController>
     {
         base.Awake();
         Screen.SetResolution(1280, 720, false);
+    }
+
+    public void OnLogCopiedToClipboard()
+    {
+        _logCopiedToast.Show();
     }
 }

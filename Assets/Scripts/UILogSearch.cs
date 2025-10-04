@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class UILogSearch : UIBehaviour
 {
@@ -10,31 +11,29 @@ public class UILogSearch : UIBehaviour
     [Header("Search Failed Message")]
     [SerializeField] private TextMeshProUGUI _searchFailedText;
     [SerializeField] private float _textDuration;
-    private float _duration;
+    private float _currentDuration;
 
     private int _nextSearchIndex = 0;
 
     private void Awake()
     {
-        _inputField.onEndEdit.AddListener(OnEndEdit);
+        _inputField.onEndEdit.AddListener((string s) =>
+        {
+            _nextSearchIndex = 0;
+        });
     }
 
     public void SearchFailed(bool showMessage)
     {
         _nextSearchIndex = 0;
         if (showMessage)
-            _duration = _textDuration;
+            _currentDuration = _textDuration;
     }
 
     private void Update()
     {
-        _duration = Mathf.Max(0f, _duration - Time.deltaTime);
-        _searchFailedText.color = _searchFailedText.color.WithAlpha(1f - Mathf.Pow(1f - _duration / _textDuration, 4f));
-    }
-
-    private void OnEndEdit(string s)
-    {
-        _nextSearchIndex = 0;
+        _currentDuration = Mathf.Max(0f, _currentDuration - Time.deltaTime);
+        _searchFailedText.color = _searchFailedText.color.WithAlpha(Easing.OutBack(_currentDuration / _textDuration));
     }
 
     public void OnClick_Search()

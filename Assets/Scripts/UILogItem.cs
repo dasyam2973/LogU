@@ -45,7 +45,11 @@ public class UILogItem : UIBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            GUIUtility.systemCopyBuffer = _viewModel.log.message;
+            MainController.Instance.OnLogCopiedToClipboard();
             SetHighlight(HighlightType.Click);
+        }
     }
 
     public void SetViewModel(LogViewModel model)
