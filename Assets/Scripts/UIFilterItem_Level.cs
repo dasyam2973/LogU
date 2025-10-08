@@ -33,12 +33,31 @@ public class UIFilterItem_Level : UIFilterItem
         return false;
     }
 
-    public override void Save()
+    public override void SaveSetting()
     {
         _useChecked = _useCheckBox && _useCheckBox.Checked;
         _includeTraceChecked = _includeTraceCheckBox && _includeTraceCheckBox.Checked;
         _includeDebugChecked = _includeDebugCheckBox && _includeDebugCheckBox.Checked;
         _includeWarningChecked = _includeWarningCheckBox && _includeWarningCheckBox.Checked;
         _includeErrorChecked = _includeErrorCheckBox && _includeErrorCheckBox.Checked;
+    }
+
+    public override void ResetSetting()
+    {
+        _useChecked = _includeTraceChecked = _includeDebugChecked = _includeWarningChecked = _includeErrorChecked = false;
+    }
+
+    public override void RefreshView()
+    {
+        if (_useCheckBox)
+            _useCheckBox.Checked = _useChecked;
+        if (_includeTraceCheckBox)
+            _includeTraceCheckBox.Checked = _includeTraceChecked;
+        if (_includeDebugCheckBox)
+            _includeDebugCheckBox.Checked = _includeDebugChecked;
+        if (_includeWarningCheckBox)
+            _includeWarningCheckBox.Checked = _includeWarningChecked;
+        if (_includeErrorCheckBox)
+            _includeErrorCheckBox.Checked = _includeErrorChecked;
     }
 }

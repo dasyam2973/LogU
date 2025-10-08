@@ -20,6 +20,20 @@ public class UIDateTimeField : UIBehaviour
         return false;
     }
 
+    public void SetValue(TimeSpan time)
+    {
+        _hourInputField.text = time.Hours.ToString();
+        _minuteInputField.text = time.Minutes.ToString();
+        _secondInputField.text = time.Seconds.ToString();
+    }
+
+    public void Clear()
+    {
+        _hourInputField.text = string.Empty;
+        _minuteInputField.text = string.Empty;
+        _secondInputField.text = string.Empty;
+    }
+
     private void Awake()
     {
         _hourInputField.onValueChanged.AddListener((string s) => OnValueChanged(_hourInputField, 23));

@@ -28,6 +28,11 @@ public class UIPopupWindow : UIDraggableObject, IPopup
         gameObject.SetActive(false);
     }
 
+    public virtual void Open()
+    {
+        Show();
+    }
+
     public virtual void Close()
     {
         Hide();

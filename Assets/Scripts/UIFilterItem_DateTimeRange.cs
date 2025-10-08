@@ -8,18 +8,16 @@ public class UIFilterItem_DateTimeRange : UIFilterItem
     [SerializeField] private UIDateTimeField _toTimeField;
 
     private bool _useChecked;
-    private DateTime _fromTime;
-    private bool _fromValid;
-    private DateTime _toTime;
-    private bool _toValid;
+    private DateTime? _fromTime;
+    private DateTime? _toTime;
 
-    public override bool UseShouldInclude => _useChecked && _fromValid && _toValid;
+    public override bool UseShouldInclude => _useChecked && _fromTime != null && _toTime != null;
 
     public override bool ShouldInclude(Log log)
     {
-        if (!_useChecked || !_fromValid || !_toValid)
+        if (_fromTime == null || _toTime == null)
             return false;
-        return _fromTime.TimeOfDay <= log.dateTime.TimeOfDay && log.dateTime.TimeOfDay <= _toTime.TimeOfDay;
+        return _fromTime.Value.TimeOfDay <= log.dateTime.TimeOfDay && log.dateTime.TimeOfDay <= _toTime.Value.TimeOfDay;
     }
 
     public override bool ShouldExclude(Log log)
@@ -27,22 +25,43 @@ public class UIFilterItem_DateTimeRange : UIFilterItem
         return false;
     }
 
-    public override void Save()
+    public override void SaveSetting()
     {
         _useChecked = _useCheckBox && _useCheckBox.Checked;
         if (_fromTimeField && _fromTimeField.TryGetValue(out DateTime time))
-        {
             _fromTime = time;
-            _fromValid = true;
-        }
         else
-            _fromValid = false;
+            _fromTime = null;
         if (_toTimeField && _toTimeField.TryGetValue(out time))
-        {
             _toTime = time;
-            _toValid = true;
-        }
         else
-            _toValid = false;
+            _toTime = null;
+    }
+
+    public override void ResetSetting()
+    {
+        _useChecked = false;
+        _fromTime = null;
+        _toTime = null;
+    }
+
+    public override void RefreshView()
+    {
+        if (_useCheckBox)
+            _useCheckBox.Checked = _useChecked;
+        if (_fromTimeField)
+        {
+            if (_fromTime == null)
+                _fromTimeField.Clear();
+            else
+                _fromTimeField.SetValue(_fromTime.Value.TimeOfDay);
+        }
+        if (_toTimeField)
+        {
+            if (_toTime == null)
+                _toTimeField.Clear();
+            else
+                _toTimeField.SetValue(_toTime.Value.TimeOfDay);
+        }
     }
 }

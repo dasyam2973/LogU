@@ -1,21 +1,49 @@
+using System;
 using UnityEngine;
 
 public class UIPopupWindow_Filter : UIPopupWindow
 {
     [SerializeField] private UIFilterItem[] _filterItems;
 
-    public void SaveFiltersSetting()
+    public void SaveFilterSettings()
     {
-        foreach (var filterItem in _filterItems)
+        Array.ForEach(_filterItems, item => item.SaveSetting());
+    }
+
+    public void ResetFilterSettings()
+    {
+        Array.ForEach(_filterItems, item =>
         {
-            filterItem.Save();
-        }
+            item.ResetSetting();
+            item.RefreshView();
+        });
+    }
+
+    public void RefreshView()
+    {
+        Array.ForEach(_filterItems, item => item.RefreshView());
     }
 
     public void ApplyFilters()
     {
-        SaveFiltersSetting();
+        SaveFilterSettings();
         MainController.Instance.LogManager.ApplyFilters(_filterItems);
+    }
+
+    public void OnClick_CopyFilterSettings()
+    {
+        MainController.Instance.GlobalMessageBox.Show("Alert", "Not implemented.");
+    }
+
+    public void OnClick_PasteFilterSettings()
+    {
+        MainController.Instance.GlobalMessageBox.Show("Alert", "Not implemented.");
+    }
+
+    public override void Open()
+    {
+        base.Open();
+        RefreshView();
     }
 
     public override void Close()

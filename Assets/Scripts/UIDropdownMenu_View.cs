@@ -13,6 +13,6 @@ public class UIDropdownMenu_View : UIDropdownMenu
     public void OnClick_Filter()
     {
         Hide();
-        _filterWindow.Show();
+        _filterWindow.Open();
     }
 }

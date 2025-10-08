@@ -24,10 +24,26 @@ public class UIFilterItem_ExcludeString : UIFilterItem
         return log.message.Contains(_keyword, _ignoreCaseChecked ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
     }
 
-    public override void Save()
+    public override void SaveSetting()
     {
         _useChecked = _useCheckBox && _useCheckBox.Checked;
         _ignoreCaseChecked = _ignoreCaseCheckBox && _ignoreCaseCheckBox.Checked;
         _keyword = _inputField.text;
+    }
+
+    public override void ResetSetting()
+    {
+        _useChecked = _ignoreCaseChecked = false;
+        _keyword = null;
+    }
+
+    public override void RefreshView()
+    {
+        if (_useCheckBox)
+            _useCheckBox.Checked = _useChecked;
+        if (_ignoreCaseCheckBox)
+            _ignoreCaseCheckBox.Checked = _ignoreCaseChecked;
+        if (_inputField)
+            _inputField.text = _keyword;
     }
 }
